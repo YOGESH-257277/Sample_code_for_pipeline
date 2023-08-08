@@ -46,13 +46,13 @@ pipeline{
                 }
             }
         }
-        stage('Static code analysis'){
+        stage('SonarQube analysis'){
             
             steps{
                 
                 script{
                     
-                    withSonarQubeEnv(credentialsId: 'sonar-api') {
+                    withSonarQubeEnv(credentialsId: 'sonar-jenkins-authentication-key') {
                         
                         sh 'mvn clean package sonar:sonar'
                     }
@@ -66,7 +66,7 @@ pipeline{
                     
                     script{
                         
-                        waitForQualityGate abortPipeline: false, credentialsId: 'sonar-api'
+                        waitForQualityGate abortPipeline: false, credentialsId: 'sonar-jenkins-authentication-key'
                     }
                 }
             }
