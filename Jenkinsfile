@@ -23,54 +23,28 @@ pipeline{
                 script{
                     
                     sh 'mvn test' 
-                }
-            }
-        }
-        stage('Integration testing'){
-            
-            steps{
-                
-                script{
-                    
                     sh 'mvn verify -DskipUnitTests'
-                }
-            }
-        }
-        stage('Maven build'){
-            
-            steps{
-                
-                script{
-                    
                     sh 'mvn clean install'
                 }
             }
         }
-        stage('SonarQube analysis'){
+        stage('DOCKER IMAGE BUILD'){
             
             steps{
                 
                 script{
                     
-                    withSonarQubeEnv(credentialsId: 'sonar-jenkins-key') {
-                        
-                        sh 'mvn clean package sonar:sonar'
-                    }
-                   }
-                    
-                }
-            }
-            stage('Quality Gate Status'){
-                
-                steps{
-                    
-                    script{
-                        
-                        waitForQualityGate abortPipeline: false, credentialsId: 'sonar-jenkins-key'
-                    }
+                    sh 'docker image build -t $JOB_NAME:v1.$BUILD_ID .'
+                    sh 'docker image tag $JOB_NAME:v1.$BUILD_ID yogesh2527/$JOB_NAME:v1.$BUILD_ID'
+                    sh 'docker image tag $JOB_NAME:v1.$BUILD_ID yogesh2527/$JOB_NAME:latest'
                 }
             }
         }
+        
+        
+
+        
+     }
         
 }
 
