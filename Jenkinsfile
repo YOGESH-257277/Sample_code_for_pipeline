@@ -16,7 +16,7 @@ pipeline{
                 }
             }
         }
-        stage('UNIT testing'){
+        stage('Testing'){
             
             steps{
                 
@@ -35,8 +35,23 @@ pipeline{
                 script{
                     
                     sh 'docker image build -t $JOB_NAME:v1.$BUILD_ID .'
-                    sh 'docker image tag $JOB_NAME:v1.$BUILD_ID yogesh2527/demo/$JOB_NAME:v1.$BUILD_ID'
-                    sh 'docker image tag $JOB_NAME:v1.$BUILD_ID yogesh2527/demo/$JOB_NAME:latest'
+                    sh 'docker image tag $JOB_NAME:v1.$BUILD_ID yogesh2527/$JOB_NAME:v1.$BUILD_ID'
+                    sh 'docker image tag $JOB_NAME:v1.$BUILD_ID yogesh2527/$JOB_NAME:latest'
+                }
+            }
+        }
+        stage('DOCKER Image PUSH to DockerHub'){
+            
+            steps{
+                
+                script{
+                    
+                    withCredentials([usernameColonPassword(credentialsId: 'docker_hub_cred',variable:'docker_hub_cred')]){
+                    
+                        sh 'docker login -u yogesh2527 -p ${docker_hub_cred}'
+                        sh 'docker image push yogesh2527/$JOB_NAME:v1.$BUILD_ID'
+                        sh 'docker image push yogesh2527/$JOB_NAME:latest'
+                    }
                 }
             }
         }
