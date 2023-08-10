@@ -35,8 +35,8 @@ pipeline{
                 script{
                     
                     sh 'docker image build -t $JOB_NAME:v1.$BUILD_ID .'
-                    sh 'docker image tag $JOB_NAME:v1.$BUILD_ID yogesh2527/$JOB_NAME:v1.$BUILD_ID'
-                    sh 'docker image tag $JOB_NAME:v1.$BUILD_ID yogesh2527/$JOB_NAME:latest'
+                    sh 'docker image tag $JOB_NAME:v1.$BUILD_ID yogesh2527/demo/$JOB_NAME:v1.$BUILD_ID'
+                    sh 'docker image tag $JOB_NAME:v1.$BUILD_ID yogesh2527/demo/$JOB_NAME:latest'
                 }
             }
         }
