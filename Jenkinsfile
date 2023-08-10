@@ -46,7 +46,7 @@ pipeline{
                 
                 script{
                     
-                    withCredentials([usernameColonPassword(credentialsId: 'docker_hub_credentials',variable:'docker_hub_cred')]){
+                    withCredentials([usernameColonPassword(credentialsId:'docker_hub',variable:'docker_hub')]){
                     
                         sh 'docker login -u yogesh2527 --p ${docker_hub_cred}'
                         sh 'docker image push yogesh2527/$JOB_NAME:v1.$BUILD_ID'
